@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CGPA Calculator</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f6f8;
+        padding: 20px;
+    }
+
+    h2, h3 {
+        text-align: center;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        margin-bottom: 20px;
+    }
+
+    th, td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+    }
+
+    th {
+        background: #e9ecef;
+    }
+
+    input {
+        width: 80px;
+        padding: 5px;
+        text-align: center;
+    }
+
+    .lab {
+        color: red;
+        font-weight: bold;
+    }
+
+    .result {
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        margin: 15px 0;
+    }
+
+    .info {
+        background: #fff;
+        padding: 15px;
+        border: 1px solid #ccc;
+        margin-top: 20px;
+    }
+
+    footer {
+        text-align: center;
+        margin-top: 25px;
+        font-weight: bold;
+    }
+</style>
+</head>
+
+<body>
+
+<h2>Semester 7 CGPA Calculator</h2>
+
+<table id="subjectTable">
+    <tr>
+        <th>Subject</th>
+        <th>Credits</th>
+        <th>Marks</th>
+        <th>Grade Point</th>
+    </tr>
+
+    <tr><td>Principles of Entrepreneurship</td><td>2</td><td><input type="number" oninput="calculateSem7()"></td><td></td></tr>
+    <tr><td>Wireless Comm Networks</td><td>3</td><td><input type="number" oninput="calculateSem7()"></td><td></td></tr>
+    <tr><td>IP Rights</td><td>4</td><td><input type="number" oninput="calculateSem7()"></td><td></td></tr>
+    <tr><td>Minor Project</td><td>3</td><td><input type="number" oninput="calculateSem7()"></td><td></td></tr>
+    <tr><td>Summer Training Report</td><td>1</td><td><input type="number" oninput="calculateSem7()"></td><td></td></tr>
+    <tr><td>PHP Programming SQL <span class="lab">{LAB}</span></td><td>1</td><td><input type="number" oninput="calculateSem7()"></td><td></td></tr>
+    <tr><td>Mobile App Dev LAB <span class="lab">{LAB}</span></td><td>1</td><td><input type="number" oninput="calculateSem7()"></td><td></td></tr>
+    <tr><td>Web & Mobile App Testing <span class="lab">{LAB}</span></td><td>1</td><td><input type="number" oninput="calculateSem7()"></td><td></td></tr>
+    <tr><td>PHP Programming SQL</td><td>3</td><td><input type="number" oninput="calculateSem7()"></td><td></td></tr>
+    <tr><td>Mobile App Development</td><td>3</td><td><input type="number" oninput="calculateSem7()"></td><td></td></tr>
+    <tr><td>Web & Mobile App Testing</td><td>3</td><td><input type="number" oninput="calculateSem7()"></td><td></td></tr>
+    <tr><td>Wireless Communication <span class="lab">{LAB}</span></td><td>1</td><td><input type="number" oninput="calculateSem7()"></td><td></td></tr>
+</table>
+
+<div class="result">
+    Semester 7 CGPA: <span id="sem7cgpa">0.00</span>
+</div>
+
+<hr>
+
+<h2>Overall CGPA Calculator</h2>
+
+<table id="overallTable">
+    <tr>
+        <th>Semester</th>
+        <th>Credits</th>
+        <th>CGPA</th>
+    </tr>
+
+    <tr><td>Semester 1</td><td>25</td><td><input type="number" step="0.01" oninput="calculateOverall()"></td></tr>
+    <tr><td>Semester 2</td><td>25</td><td><input type="number" step="0.01" oninput="calculateOverall()"></td></tr>
+    <tr><td>Semester 3</td><td>26</td><td><input type="number" step="0.01" oninput="calculateOverall()"></td></tr>
+    <tr><td>Semester 4</td><td>26</td><td><input type="number" step="0.01" oninput="calculateOverall()"></td></tr>
+    <tr><td>Semester 5</td><td>26</td><td><input type="number" step="0.01" oninput="calculateOverall()"></td></tr>
+    <tr><td>Semester 6</td><td>26</td><td><input type="number" step="0.01" oninput="calculateOverall()"></td></tr>
+    <tr><td>Semester 7</td><td>26</td><td><input type="number" id="sem7input" readonly></td></tr>
+</table>
+
+<div class="result">
+    Overall CGPA: <span id="overallCgpa">0.00</span>
+</div>
+
+<div class="info">
+    <p><strong>Overall CGPA Formula:</strong></p>
+    <p>Σ (Semester CGPA × Semester Credits) / Σ (Semester Credits)</p>
+</div>
+
+<script>
+function getGradePoint(m) {
+    if (m >= 90) return 10;
+    if (m >= 75) return 9;
+    if (m >= 65) return 8;
+    if (m >= 55) return 7;
+    if (m >= 50) return 6;
+    if (m >= 45) return 5;
+    if (m >= 40) return 4;
+    return 0;
+}
+
+function calculateSem7() {
+    const table = document.getElementById("subjectTable").rows;
+    let totalCredits = 0, totalPoints = 0;
+
+    for (let i = 1; i < table.length; i++) {
+        const credits = parseFloat(table[i].cells[1].innerText);
+        const input = table[i].cells[2].querySelector("input");
+        const gpCell = table[i].cells[3];
+
+        if (!input.value) {
+            gpCell.innerText = "";
+            continue;
+        }
+
+        const gp = getGradePoint(parseFloat(input.value));
+        gpCell.innerText = gp;
+
+        totalCredits += credits;
+        totalPoints += gp * credits;
+    }
+
+    const sem7 = totalCredits ? (totalPoints / totalCredits).toFixed(2) : "0.00";
+    document.getElementById("sem7cgpa").innerText = sem7;
+    document.getElementById("sem7input").value = sem7;
+
+    calculateOverall();
+}
+
+function calculateOverall() {
+    const rows = document.getElementById("overallTable").rows;
+    let sumCredits = 0, sumPoints = 0;
+
+    for (let i = 1; i < rows.length; i++) {
+        const credits = parseFloat(rows[i].cells[1].innerText);
+        const input = rows[i].cells[2].querySelector("input");
+
+        if (!input.value) continue;
+
+        sumCredits += credits;
+        sumPoints += credits * parseFloat(input.value);
+    }
+
+    const overall = sumCredits ? (sumPoints / sumCredits).toFixed(2) : "0.00";
+    document.getElementById("overallCgpa").innerText = overall;
+}
+</script>
+
+</body>
+</html>
