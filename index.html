@@ -2,185 +2,431 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>CGPA Calculator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GGSIPU CGPA Calculator</title>
 
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #f4f6f8;
-        padding: 20px;
-    }
+body { 
+    font-family: 'Calibri', 'Segoe UI', sans-serif; 
+    background: #ffffff; 
+    color: #1a2a6c; 
+    padding: 0; 
+    margin: 0;
+}
 
-    h2, h3 {
-        text-align: center;
-    }
+.header-ribbon {
+    background: #1a2a6c;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        background: #fff;
-        margin-bottom: 20px;
-    }
+.container { 
+    max-width: 600px; 
+    margin: 0 auto; 
+    background: #f8f9fa; 
+    padding: 25px; 
+    border-radius: 20px; 
+    box-shadow: 0 10px 30px rgba(26, 42, 108, 0.05);
+    margin-bottom: 50px;
+}
 
-    th, td {
-        border: 1px solid #ccc;
-        padding: 10px;
-        text-align: center;
-    }
+.hint-text {
+    display: block;
+    font-size: 22px;
+    color: #1a2a6c;
+    text-align: center;
+    margin-bottom: 25px;
+    line-height: 1.2;
+}
 
-    th {
-        background: #e9ecef;
-    }
+.question-box { text-align: center; margin-bottom: 30px; }
 
-    input {
-        width: 80px;
-        padding: 5px;
-        text-align: center;
-    }
+.btn { 
+    padding: 12px 24px; 
+    margin: 8px; 
+    border: none; 
+    border-radius: 12px; 
+    cursor: pointer; 
+    font-size: 16px; 
+    transition: 0.3s; 
+    display: inline-block;
+    text-decoration: none;
+    font-family: inherit;
+}
 
-    .lab {
-        color: red;
-        font-weight: bold;
-    }
+.btn-yes { background: #1a2a6c; color: white; }
+.btn-no { background: #e9ecef; color: #1a2a6c; border: 1px solid #d1d9e6; }
+.btn-link { background: #1a2a6c; color: white; width: 90%; max-width: 320px; margin-top: 15px; }
 
-    .result {
-        font-size: 18px;
-        font-weight: bold;
-        text-align: center;
-        margin: 15px 0;
-    }
+table { width: 100%; border-collapse: collapse; margin-bottom: 20px; table-layout: fixed; }
 
-    .info {
-        background: #fff;
-        padding: 15px;
-        border: 1px solid #ccc;
-        margin-top: 20px;
-    }
+th { font-weight: normal; color: #7f8c8d; font-size: 14px; padding: 12px; text-align: center; border-bottom: 1px solid #eee; }
 
-    footer {
-        text-align: center;
-        margin-top: 25px;
-        font-weight: bold;
-    }
+td { background: #ffffff; padding: 12px; text-align: center; border-bottom: 1px solid #eee; overflow: hidden; }
+
+.col-sub { width: 50%; text-align: left; }
+.col-cred { width: 15%; }
+.col-marks { width: 20%; }
+.col-gp { width: 15%; }
+
+input { 
+    width: 80%; 
+    padding: 8px; 
+    border: 1px solid #d1d9e6; 
+    border-radius: 8px; 
+    text-align: center; 
+    font-family: inherit;
+    font-size: 14px;
+}
+
+input:focus { outline: none; border-color: #1a2a6c; }
+
+.ribbon-green { 
+    background: #27ae60; 
+    color: white; 
+    padding: 15px; 
+    border-radius: 12px; 
+    text-align: center; 
+    font-size: 20px; 
+    margin: 20px 0;
+}
+
+.hidden { display: none; }
+
+.lab { color: red; opacity: 0.9; }
+
+.enroll-section { text-align: center; border-top: 2px solid #eee; padding-top: 30px; margin-top: 20px; }
+
+.enroll-input { 
+    width: 85%; 
+    font-size: 18px; 
+    padding: 12px; 
+    margin: 15px 0; 
+    border-radius: 12px; 
+    border: 1px solid #d1d9e6;
+}
+
+.final-result {
+    background: #1a2a6c;
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 24px;
+    margin-top: 20px;
+}
+
+h2.title { font-weight: normal; text-align: center; margin-top: 40px; }
+
+@media (max-width: 480px) {
+    .container { padding: 15px; border-radius: 0; }
+    .col-sub { width: 40%; font-size: 13px; }
+    input { width: 90%; }
+}
 </style>
 </head>
 
 <body>
 
-<h2>Semester 7 CGPA Calculator</h2>
+<div class="header-ribbon">GGSIPU CGPA Calculator</div>
+
+<div class="container">
+
+<div class="question-box">
+<h2 style="font-weight: normal;">Do you have your 7th Semester SGPA?</h2>
+<button class="btn btn-yes" onclick="unlockEnrollment()">Yes, Find Overall CGPA</button>
+<button class="btn btn-no" onclick="showSem7Calc()">No, I need to calculate SGPA</button>
+</div>
+
+<div id="sem7Section" class="hidden">
+
+<div style="text-align:center; margin-bottom: 20px;">
+<a href="https://examweb.ggsipu.ac.in/web/login.jsp" target="_blank" class="btn btn-no" style="font-size:14px;">Open GGSIPU Login for Marks</a>
+
+<span class="hint-text">Enter your subject-wise marks below, click button above to find your marks if you don't know your marks.</span>
+</div>
 
 <table id="subjectTable">
-    <tr>
-        <th>Subject</th>
-        <th>Credits</th>
-        <th>Marks</th>
-        <th>Grade Point</th>
-    </tr>
 
-    <tr><td>Principles of Entrepreneurship</td><td>2</td><td><input type="number" oninput="calculateSem7()"></td><td></td></tr>
-    <tr><td>Wireless Comm Networks</td><td>3</td><td><input type="number" oninput="calculateSem7()"></td><td></td></tr>
-    <tr><td>IP Rights</td><td>4</td><td><input type="number" oninput="calculateSem7()"></td><td></td></tr>
-    <tr><td>Minor Project</td><td>3</td><td><input type="number" oninput="calculateSem7()"></td><td></td></tr>
-    <tr><td>Summer Training Report</td><td>1</td><td><input type="number" oninput="calculateSem7()"></td><td></td></tr>
-    <tr><td>PHP Programming SQL <span class="lab">{LAB}</span></td><td>1</td><td><input type="number" oninput="calculateSem7()"></td><td></td></tr>
-    <tr><td>Mobile App Dev LAB <span class="lab">{LAB}</span></td><td>1</td><td><input type="number" oninput="calculateSem7()"></td><td></td></tr>
-    <tr><td>Web & Mobile App Testing <span class="lab">{LAB}</span></td><td>1</td><td><input type="number" oninput="calculateSem7()"></td><td></td></tr>
-    <tr><td>PHP Programming SQL</td><td>3</td><td><input type="number" oninput="calculateSem7()"></td><td></td></tr>
-    <tr><td>Mobile App Development</td><td>3</td><td><input type="number" oninput="calculateSem7()"></td><td></td></tr>
-    <tr><td>Web & Mobile App Testing</td><td>3</td><td><input type="number" oninput="calculateSem7()"></td><td></td></tr>
-    <tr><td>Wireless Communication <span class="lab">{LAB}</span></td><td>1</td><td><input type="number" oninput="calculateSem7()"></td><td></td></tr>
+<thead>
+<tr>
+<th class="col-sub">Subject</th>
+<th class="col-cred">Crd</th>
+<th class="col-marks">Marks</th>
+<th class="col-gp">GP</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr><td class="col-sub">Principles of Entrepreneurship</td><td>2</td><td><input type="number" oninput="validateMarks(this); calculateSem7()"></td><td></td></tr>
+<tr><td class="col-sub">Wireless Comm Networks</td><td>3</td><td><input type="number" oninput="validateMarks(this); calculateSem7()"></td><td></td></tr>
+<tr><td class="col-sub">IP Rights</td><td>4</td><td><input type="number" oninput="validateMarks(this); calculateSem7()"></td><td></td></tr>
+<tr><td class="col-sub">Minor Project</td><td>3</td><td><input type="number" oninput="validateMarks(this); calculateSem7()"></td><td></td></tr>
+<tr><td class="col-sub">Summer Training Report</td><td>1</td><td><input type="number" oninput="validateMarks(this); calculateSem7()"></td><td></td></tr>
+<tr><td class="col-sub">PHP Prog SQL <span class="lab">{LAB}</span></td><td>1</td><td><input type="number" oninput="validateMarks(this); calculateSem7()"></td><td></td></tr>
+<tr><td class="col-sub">Mobile App Dev <span class="lab">{LAB}</span></td><td>1</td><td><input type="number" oninput="validateMarks(this); calculateSem7()"></td><td></td></tr>
+<tr><td class="col-sub">Web Testing <span class="lab">{LAB}</span></td><td>1</td><td><input type="number" oninput="validateMarks(this); calculateSem7()"></td><td></td></tr>
+<tr><td class="col-sub">PHP Programming SQL</td><td>3</td><td><input type="number" oninput="validateMarks(this); calculateSem7()"></td><td></td></tr>
+<tr><td class="col-sub">Mobile App Development</td><td>3</td><td><input type="number" oninput="validateMarks(this); calculateSem7()"></td><td></td></tr>
+<tr><td class="col-sub">Web & Mobile App Testing</td><td>3</td><td><input type="number" oninput="validateMarks(this); calculateSem7()"></td><td></td></tr>
+<tr><td class="col-sub">Wireless Comm <span class="lab">{LAB}</span></td><td>1</td><td><input type="number" oninput="validateMarks(this); calculateSem7()"></td><td></td></tr>
+
+</tbody>
 </table>
 
-<div class="result">
-    Semester 7 CGPA: <span id="sem7cgpa">0.00</span>
+<div class="ribbon-green">SEMESTER 7 CGPA: <span id="sem7Display">0.00</span></div>
+
+<h1 style="font-weight: normal;">Calculate your Overall CGPA</h1>
+
 </div>
 
-<hr>
+<div id="enrollmentSection" class="hidden enroll-section">
 
-<h2>Overall CGPA Calculator</h2>
+<p style="font-size: 18px; margin: 0;">Enter Enrollment Number to proceed:</p>
+
+<input type="text" id="enrollNo" class="enroll-input" placeholder="11-digit enrollment no." maxlength="11" oninput="handleEnrollment(this)">
+
+<div id="ranklistBtnContainer"></div>
+
+</div>
+
+<div id="overallSection" class="hidden">
+
+<h2 class="title">Enter Semester-Wise SGPA, Click Button above if you don't know your SGPA.</h2>
 
 <table id="overallTable">
-    <tr>
-        <th>Semester</th>
-        <th>Credits</th>
-        <th>CGPA</th>
-    </tr>
 
-    <tr><td>Semester 1</td><td>25</td><td><input type="number" step="0.01" oninput="calculateOverall()"></td></tr>
-    <tr><td>Semester 2</td><td>25</td><td><input type="number" step="0.01" oninput="calculateOverall()"></td></tr>
-    <tr><td>Semester 3</td><td>26</td><td><input type="number" step="0.01" oninput="calculateOverall()"></td></tr>
-    <tr><td>Semester 4</td><td>26</td><td><input type="number" step="0.01" oninput="calculateOverall()"></td></tr>
-    <tr><td>Semester 5</td><td>26</td><td><input type="number" step="0.01" oninput="calculateOverall()"></td></tr>
-    <tr><td>Semester 6</td><td>26</td><td><input type="number" step="0.01" oninput="calculateOverall()"></td></tr>
-    <tr><td>Semester 7</td><td>26</td><td><input type="number" id="sem7input" readonly></td></tr>
+<thead>
+<tr>
+<th style="width: 40%; text-align: left;">Semester</th>
+<th style="width: 30%;">Credits</th>
+<th style="width: 30%;">SGPA</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr><td style="text-align: left;">Semester 1</td><td>25</td><td><input type="number" step="0.01" oninput="calculateOverall()"></td></tr>
+<tr><td style="text-align: left;">Semester 2</td><td>25</td><td><input type="number" step="0.01" oninput="calculateOverall()"></td></tr>
+<tr><td style="text-align: left;">Semester 3</td><td>26</td><td><input type="number" step="0.01" oninput="calculateOverall()"></td></tr>
+<tr><td style="text-align: left;">Semester 4</td><td>26</td><td><input type="number" step="0.01" oninput="calculateOverall()"></td></tr>
+<tr><td style="text-align: left;">Semester 5</td><td>26</td><td><input type="number" step="0.01" oninput="calculateOverall()"></td></tr>
+<tr><td style="text-align: left;">Semester 6</td><td>26</td><td><input type="number" step="0.01" oninput="calculateOverall()"></td></tr>
+<tr><td style="text-align: left;">Semester 7 (As Calculated Above)</td><td>26</td><td><input type="number" id="sem7input" step="0.01" oninput="calculateOverall()"></td></tr>
+
+</tbody>
+
 </table>
 
-<div class="result">
-    Overall CGPA: <span id="overallCgpa">0.00</span>
+<div class="final-result">OVERALL CGPA: <span id="overallDisplay">0.00</span></div>
+
+<div style="text-align:center; margin-top:15px;">
+<button class="btn btn-yes hidden" id="gradBtn" onclick="showGraduating()">Find out Graduating CGPA</button>
 </div>
 
-<div class="info">
-    <p><strong>Overall CGPA Formula:</strong></p>
-    <p>Σ (Semester CGPA × Semester Credits) / Σ (Semester Credits)</p>
+<div id="gradTableSection" class="hidden">
+
+<table>
+<thead>
+<tr>
+<th>Semester 8 SGPA</th>
+<th>Graduating CGPA</th>
+</tr>
+</thead>
+
+<tbody id="gradTableBody"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
 </div>
 
 <script>
-function getGradePoint(m) {
-    if (m >= 90) return 10;
-    if (m >= 75) return 9;
-    if (m >= 65) return 8;
-    if (m >= 55) return 7;
-    if (m >= 50) return 6;
-    if (m >= 45) return 5;
-    if (m >= 40) return 4;
-    return 0;
+
+function showSem7Calc(){
+document.getElementById('sem7Section').classList.remove('hidden');
+document.getElementById('enrollmentSection').classList.remove('hidden');
 }
 
-function calculateSem7() {
-    const table = document.getElementById("subjectTable").rows;
-    let totalCredits = 0, totalPoints = 0;
-
-    for (let i = 1; i < table.length; i++) {
-        const credits = parseFloat(table[i].cells[1].innerText);
-        const input = table[i].cells[2].querySelector("input");
-        const gpCell = table[i].cells[3];
-
-        if (!input.value) {
-            gpCell.innerText = "";
-            continue;
-        }
-
-        const gp = getGradePoint(parseFloat(input.value));
-        gpCell.innerText = gp;
-
-        totalCredits += credits;
-        totalPoints += gp * credits;
-    }
-
-    const sem7 = totalCredits ? (totalPoints / totalCredits).toFixed(2) : "0.00";
-    document.getElementById("sem7cgpa").innerText = sem7;
-    document.getElementById("sem7input").value = sem7;
-
-    calculateOverall();
+function unlockEnrollment(){
+document.getElementById('sem7Section').classList.add('hidden');
+document.getElementById('enrollmentSection').classList.remove('hidden');
 }
 
-function calculateOverall() {
-    const rows = document.getElementById("overallTable").rows;
-    let sumCredits = 0, sumPoints = 0;
-
-    for (let i = 1; i < rows.length; i++) {
-        const credits = parseFloat(rows[i].cells[1].innerText);
-        const input = rows[i].cells[2].querySelector("input");
-
-        if (!input.value) continue;
-
-        sumCredits += credits;
-        sumPoints += credits * parseFloat(input.value);
-    }
-
-    const overall = sumCredits ? (sumPoints / sumCredits).toFixed(2) : "0.00";
-    document.getElementById("overallCgpa").innerText = overall;
+function validateMarks(input){
+if(input.value>100)input.value=100;
+if(input.value<0&&input.value!=="")input.value=0;
 }
+
+function handleEnrollment(input){
+
+input.value=input.value.replace(/\D/g,'');
+
+const container=document.getElementById('ranklistBtnContainer');
+const overall=document.getElementById('overallSection');
+
+if(input.value.length===11){
+
+container.innerHTML=`<a href="https://ipuranklist.com/student/${input.value}" target="_blank" class="btn btn-link">Find Sem 1-6 CGPAs on IPURanklist</a>`;
+overall.classList.remove('hidden');
+
+}else{
+
+container.innerHTML='';
+overall.classList.add('hidden');
+
+}
+
+}
+
+function getGradePoint(m){
+
+if(m===""||m===null)return 0;
+
+let mark=parseFloat(m);
+
+if(mark>=90)return 10;
+if(mark>=75)return 9;
+if(mark>=65)return 8;
+if(mark>=55)return 7;
+if(mark>=50)return 6;
+if(mark>=45)return 5;
+if(mark>=40)return 4;
+
+return 0;
+
+}
+
+function calculateSem7(){
+
+const table=document.getElementById("subjectTable").rows;
+
+let totalCredits=0,totalPoints=0;
+
+for(let i=1;i<table.length;i++){
+
+const credits=parseFloat(table[i].cells[1].innerText);
+const marksInput=table[i].cells[2].querySelector("input");
+const gpCell=table[i].cells[3];
+
+if(marksInput.value!==""){
+
+const gp=getGradePoint(marksInput.value);
+
+gpCell.innerText=gp;
+
+totalCredits+=credits;
+
+totalPoints+=gp*credits;
+
+}else{
+
+gpCell.innerText="";
+
+}
+
+}
+
+const res=totalCredits?(totalPoints/totalCredits).toFixed(2):"0.00";
+
+document.getElementById("sem7Display").innerText=res;
+
+document.getElementById("sem7input").value=res;
+
+calculateOverall();
+
+}
+
+function calculateOverall(){
+
+const table=document.getElementById("overallTable");
+
+const rows=table.getElementsByTagName("tbody")[0].rows;
+
+let sumCredits=0,sumPoints=0;
+
+for(let i=0;i<rows.length;i++){
+
+const credits=parseFloat(rows[i].cells[1].innerText);
+
+const val=rows[i].cells[2].querySelector("input").value;
+
+if(val!==""){
+
+sumCredits+=credits;
+
+sumPoints+=credits*parseFloat(val);
+
+}
+
+}
+
+const overall=sumCredits?(sumPoints/sumCredits).toFixed(2):"0.00";
+
+document.getElementById("overallDisplay").innerText=overall;
+
+if(sumCredits>0){
+document.getElementById("gradBtn").classList.remove("hidden");
+}
+
+}
+
+function showGraduating(){
+
+const table=document.getElementById("overallTable");
+
+const rows=table.getElementsByTagName("tbody")[0].rows;
+
+let sumCredits=0,sumPoints=0;
+
+for(let i=0;i<rows.length;i++){
+
+const credits=parseFloat(rows[i].cells[1].innerText);
+
+const val=rows[i].cells[2].querySelector("input").value;
+
+if(val!==""){
+
+sumCredits+=credits;
+
+sumPoints+=credits*parseFloat(val);
+
+}
+
+}
+
+const finalCredits=20;
+
+const options=[10,9.5,9,8.5];
+
+const tbody=document.getElementById("gradTableBody");
+
+tbody.innerHTML="";
+
+options.forEach(sgpa=>{
+
+const cgpa=((sumPoints+(sgpa*finalCredits))/(sumCredits+finalCredits)).toFixed(2);
+
+const row=`<tr>
+<td>${sgpa}</td>
+<td>${cgpa}</td>
+</tr>`;
+
+tbody.innerHTML+=row;
+
+});
+
+document.getElementById("gradTableSection").classList.remove("hidden");
+
+}
+
 </script>
 
 </body>
